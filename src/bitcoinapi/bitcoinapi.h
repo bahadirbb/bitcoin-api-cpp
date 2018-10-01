@@ -26,6 +26,7 @@ private:
 public:
     /* === Constructor and Destructor === */
     BitcoinAPI(const std::string& user, const std::string& password, const std::string& host, int port, int httpTimeout);
+    BitcoinAPI(const std::string& user, const std::string& password, const std::string& host, int port, const std::string& wallet, int httpTimeout);
     ~BitcoinAPI();
 
     /* === Auxiliary functions === */
