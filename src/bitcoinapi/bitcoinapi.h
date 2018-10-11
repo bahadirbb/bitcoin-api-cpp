@@ -134,7 +134,7 @@ public:
     workdata_t getwork();
     bool getwork(const std::string& data);
 
-    txsinceblock_t listsinceblock(const std::string& blockhash = "", int target_confirmations = 1);
+    txsinceblock_t listsinceblock(const std::string& blockhash = "", int target_confirmations = 1, bool includewatchonly = false);
 
 
     /* === Low level calls === */

@@ -580,6 +580,7 @@ vector<transactioninfo_t> BitcoinAPI::listtransactions() {
 		tmp.address = val["address"].asString();
 		tmp.category = val["category"].asString();
 		tmp.amount = val["amount"].asDouble();
+		tmp.fee = val["fee"].asDouble();
 		tmp.confirmations = val["confirmations"].asInt();
 		tmp.blockhash = val["blockhash"].asString();
 		tmp.blockindex = val["blockindex"].asInt();
@@ -618,6 +619,7 @@ vector<transactioninfo_t> BitcoinAPI::listtransactions(const string& account, in
 		tmp.address = val["address"].asString();
 		tmp.category = val["category"].asString();
 		tmp.amount = val["amount"].asDouble();
+		tmp.fee = val["fee"].asDouble();
 		tmp.confirmations = val["confirmations"].asInt();
 		tmp.blockhash = val["blockhash"].asString();
 		tmp.blockindex = val["blockindex"].asInt();
@@ -1010,13 +1012,14 @@ mininginfo_t BitcoinAPI::getmininginfo() {
 }
 
 
-txsinceblock_t BitcoinAPI::listsinceblock(const string& blockhash, int target_confirmations) {
+txsinceblock_t BitcoinAPI::listsinceblock(const string& blockhash, int target_confirmations, bool includewatchonly) {
 	string command = "listsinceblock";
 	Value params, result;
 	txsinceblock_t ret;
 
 	params.append(blockhash);
 	params.append(target_confirmations);
+	params.append(includewatchonly);
 	result = sendcommand(command, params);
 
 	for(ValueIterator it = result["transactions"].begin(); it != result["transactions"].end(); it++){
@@ -1027,6 +1030,7 @@ txsinceblock_t BitcoinAPI::listsinceblock(const string& blockhash, int target_co
 		tmp.address = val["address"].asString();
 		tmp.category = val["category"].asString();
 		tmp.amount = val["amount"].asDouble();
+		tmp.fee = val["fee"].asDouble();
 		tmp.confirmations = val["confirmations"].asInt();
 		tmp.blockhash = val["blockhash"].asString();
 		tmp.blockindex = val["blockindex"].asInt();
