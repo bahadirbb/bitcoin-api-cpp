@@ -406,6 +406,17 @@ double BitcoinAPI::estimatefee(int blocks) {
 	return result.asDouble();
 }
 
+smartfee_t BitcoinAPI::estimatesmartfee(int blocks) {
+	string command = "estimatesmartfee";
+	Value params, result;
+	smartfee_t ret;
+	params.append(blocks);
+	result = sendcommand(command, params);
+	ret.feerate = result["feerate"].asDouble();
+	ret.blocks = result["blocks"].asInt();
+	return ret;
+}
+
 string BitcoinAPI::signmessage(const std::string& bitcoinaddress, const std::string& message) {
 	string command = "signmessage";
 	Value params, result;

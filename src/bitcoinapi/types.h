@@ -210,6 +210,11 @@
 
 
 	/* === Other === */
+
+	struct smartfee_t{
+		double feerate;
+		int blocks;
+	};
 	struct utxoinfo_t{
 		std::string bestblock;
 		int confirmations;

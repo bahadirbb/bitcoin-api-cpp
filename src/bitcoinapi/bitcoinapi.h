@@ -65,6 +65,7 @@ public:
     void keypoolrefill();
     bool settxfee(double amount);
     double estimatefee(int blocks);
+    smartfee_t estimatesmartfee(int blocks);
 
     std::string signmessage(const std::string& bitcoinaddress, const std::string& message);
     bool verifymessage(const std::string& bitcoinaddress, const std::string& signature, const std::string& message);
@@ -83,7 +84,7 @@ public:
 
     std::vector<accountinfo_t> listreceivedbyaccount(int minconf = 1, bool includeempty = false);
     std::vector<addressinfo_t> listreceivedbyaddress(int minconf = 1, bool includeempty = false);
-
+    
     gettransaction_t gettransaction(const std::string& tx, bool watch);
     std::vector<transactioninfo_t> listtransactions();
     std::vector<transactioninfo_t> listtransactions(const std::string& account, int count = 10, int from = 0);
