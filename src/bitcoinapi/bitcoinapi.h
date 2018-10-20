@@ -11,6 +11,8 @@
 #ifndef BITCOIN_API_H
 #define BITCOIN_API_H
 
+#define _OMNI_SUPPORT_
+
 #include "types.h"
 #include "exception.h"
 
@@ -28,6 +30,22 @@ public:
     BitcoinAPI(const std::string& user, const std::string& password, const std::string& host, int port, int httpTimeout = 50000);
     BitcoinAPI(const std::string& user, const std::string& password, const std::string& host, int port, const std::string& wallet, int httpTimeout = 50000);
     ~BitcoinAPI();
+
+    #ifdef _OMNI_SUPPORT_
+    /*
+        virtual double estimatesmartfee(int requestedBlockCount) = 0;
+    virtual bool settxfee(double fee) = 0;
+    virtual std::string getnewaddress(const std::string& account = "") = 0;
+    virtual void walletpassphrase(const std::string& password, int timeout) = 0;
+    virtual void walletlock() = 0;
+    virtual std::string sendfrom(const std::string& fromaccount, const std::string& tobitcoinaddress, double amount) = 0;
+    virtual std::string sendmany(const std::string& fromaccount, const std::map<std::string, double>& amounts) = 0;
+
+*/
+    void omni_funded_send();
+    void omni_funded_sendall();
+    void omni_send();
+    #endif
 
     /* === Auxiliary functions === */
     Json::Value sendcommand(const std::string& command, const Json::Value& params);
