@@ -242,6 +242,39 @@
 		int confirmations;
 	};
 
+	#ifdef _OMNI_SUPPORT_
+
+	struct omni_transaction_t {
+		std::string txid;
+		std::string sendingaddress;
+		std::string referenceaddress;
+		bool ismine;
+		int confirmations;
+		double amount;
+		std::string blockhash;
+	    unsigned int block;
+		double fee;
+		unsigned int blocktime;
+		bool valid;
+		unsigned int positioninblock;
+		int version;
+		int type_int;
+		std::string type;
+	};
+
+	struct omni_balance_t {
+		double balance;
+		double reserved;
+		double frozen;
+	};
+
+	struct omni_detailed_balance_t: omni_balance_t{
+		int propertyid;
+		std::string name;
+	};
+
+	#endif
+
 
 	/* === Unused yet === */
 	struct blockinfo_t{

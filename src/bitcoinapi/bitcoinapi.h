@@ -42,9 +42,18 @@ public:
     virtual std::string sendmany(const std::string& fromaccount, const std::map<std::string, double>& amounts) = 0;
 
 */
+/*
     void omni_funded_send();
     void omni_funded_sendall();
     void omni_send();
+    */
+
+    void omni_funded_sendall();
+    
+    std::vector<omni_detailed_balance_t> omni_getwalletbalances(bool includewatchonly);
+    omni_balance_t omni_getbalance(const std::string& address, int propertyid);
+    std::vector<omni_transaction_t> omni_listtransactions(const std::string& txid = "*", int count = 10, int skip = 0, int startblock = 0, int endblock = 999999999);
+
     #endif
 
     /* === Auxiliary functions === */

@@ -1383,3 +1383,89 @@ utxosetinfo_t BitcoinAPI::gettxoutsetinfo() {
 
 	return ret;
 }
+
+#ifdef _OMNI_SUPPORT_
+
+std::vector<omni_detailed_balance_t> BitcoinAPI::omni_getwalletbalances(bool includewatchonly)
+{
+	string command = "omni_getwalletbalances";
+	Value params, result;
+	vector<omni_detailed_balance_t> ret;
+
+	params.append(includewatchonly);
+	result = sendcommand(command, params);
+
+	for(ValueIterator it = result.begin(); it != result.end(); it++){
+		omni_detailed_balance_t tmp;
+		Value val = (*it);
+
+		tmp.balance = val["balance"].asDouble();
+		tmp.reserved = val["reserved"].asDouble();
+		tmp.propertyid = val["propertyid"].asDouble();
+		tmp.name = val["name"].asString();
+		tmp.propertyid = val["propertyid"].asInt();
+
+		ret.push_back(tmp);
+	}
+
+	return ret;
+}
+
+omni_balance_t BitcoinAPI::omni_getbalance(const std::string& address, int propertyid)
+{
+	string command = "omni_getbalance";
+	Value params, result;
+	omni_balance_t ret;
+
+	params.append(address);
+	params.append(propertyid);
+
+	result = sendcommand(command, params);
+
+	ret.balance = result["balance"].asDouble();
+	ret.reserved = result["reserved"].asDouble();
+	ret.frozen = result["frozen"].asDouble();
+
+	return ret;
+}
+
+std::vector<omni_transaction_t> BitcoinAPI::omni_listtransactions(const std::string& txid, int count, int skip, int startblock, int endblock) 
+{	
+	string command = "omni_listtransactions";
+	Value params, result;
+	vector<omni_transaction_t> ret;
+
+	params.append(txid);
+	params.append(count);
+	params.append(skip);
+	params.append(startblock);
+	params.append(endblock);
+	result = sendcommand(command, params);
+
+	for(ValueIterator it = result.begin(); it != result.end(); it++){
+		omni_transaction_t tmp;
+		Value val = (*it);
+		tmp.txid = val["txid"].asString();
+		tmp.sendingaddress = val["sendingaddress"].asString();
+		tmp.referenceaddress = val["referenceaddress"].asString();
+		tmp.ismine = val["ismine"].asBool();
+		tmp.confirmations = val["confirmations"].asInt();
+		tmp.fee = val["fee"].asDouble();
+		tmp.blocktime = val["blocktime"].asUInt();
+		tmp.valid = val["valid"].asBool();
+		tmp.positioninblock = val["positioninblock"].asUInt();
+		tmp.version = val["version"].asInt();
+		tmp.type_int = val["type_int"].asInt();
+		tmp.type = val["type"].asString();
+		tmp.amount = val["amount"].asDouble();
+		tmp.blockhash = val["blockhash"].asString();
+		tmp.block = val["block"].asUInt();
+
+		ret.push_back(tmp);
+	}
+
+	return ret;
+
+}
+
+#endif
