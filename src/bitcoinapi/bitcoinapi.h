@@ -32,24 +32,8 @@ public:
     ~BitcoinAPI();
 
     #ifdef _OMNI_SUPPORT_
-    /*
-        virtual double estimatesmartfee(int requestedBlockCount) = 0;
-    virtual bool settxfee(double fee) = 0;
-    virtual std::string getnewaddress(const std::string& account = "") = 0;
-    virtual void walletpassphrase(const std::string& password, int timeout) = 0;
-    virtual void walletlock() = 0;
-    virtual std::string sendfrom(const std::string& fromaccount, const std::string& tobitcoinaddress, double amount) = 0;
-    virtual std::string sendmany(const std::string& fromaccount, const std::map<std::string, double>& amounts) = 0;
-
-*/
-/*
-    void omni_funded_send();
-    void omni_funded_sendall();
-    void omni_send();
-    */
-
-    void omni_funded_sendall();
-    
+    std::string omni_send(const std::string& fromaddress, const std::string& toaddress, int propertyid, double amount);
+    std::string omni_funded_sendall(const std::string& fromaddress, const std::string& toaddress, int ecosystem, const std::string& feeaddress);
     std::vector<omni_detailed_balance_t> omni_getwalletbalances(bool includewatchonly);
     omni_balance_t omni_getbalance(const std::string& address, int propertyid);
     std::vector<omni_transaction_t> omni_listtransactions(const std::string& txid = "*", int count = 10, int skip = 0, int startblock = 0, int endblock = 999999999);

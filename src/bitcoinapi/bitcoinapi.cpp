@@ -1386,6 +1386,34 @@ utxosetinfo_t BitcoinAPI::gettxoutsetinfo() {
 
 #ifdef _OMNI_SUPPORT_
 
+std::string BitcoinAPI::omni_send(const std::string& fromaddress, const std::string& toaddress, int propertyid, double amount)
+{
+	string command = "omni_send";
+	Value params, result;
+
+	params.append(fromaddress);
+	params.append(toaddress);
+	params.append(propertyid);
+	params.append(amount);
+
+	result = sendcommand(command, params);
+	return result.asString();
+}
+
+std::string BitcoinAPI::omni_funded_sendall(const std::string& fromaddress, const std::string& toaddress, int ecosystem, const std::string& feeaddress)
+{
+	string command = "omni_funded_sendall";
+	Value params, result;
+
+	params.append(fromaddress);
+	params.append(toaddress);
+	params.append(ecosystem);
+	params.append(feeaddress);
+
+	result = sendcommand(command, params);
+	return result.asString();
+}
+
 std::vector<omni_detailed_balance_t> BitcoinAPI::omni_getwalletbalances(bool includewatchonly)
 {
 	string command = "omni_getwalletbalances";
