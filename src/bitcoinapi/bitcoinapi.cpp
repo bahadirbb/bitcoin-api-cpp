@@ -1427,9 +1427,9 @@ std::vector<omni_detailed_balance_t> BitcoinAPI::omni_getwalletbalances(bool inc
 		omni_detailed_balance_t tmp;
 		Value val = (*it);
 
-		tmp.balance = val["balance"].asDouble();
-		tmp.reserved = val["reserved"].asDouble();
-		tmp.propertyid = val["propertyid"].asDouble();
+		tmp.balance = stod(val["balance"].asString());
+		tmp.reserved = stod(val["reserved"].asString());
+		tmp.frozen = stod(val["frozen"].asString());
 		tmp.name = val["name"].asString();
 		tmp.propertyid = val["propertyid"].asInt();
 
@@ -1450,9 +1450,9 @@ omni_balance_t BitcoinAPI::omni_getbalance(const std::string& address, int prope
 
 	result = sendcommand(command, params);
 
-	ret.balance = result["balance"].asDouble();
-	ret.reserved = result["reserved"].asDouble();
-	ret.frozen = result["frozen"].asDouble();
+	ret.balance = stod(result["balance"].asString());
+	ret.reserved = stod(result["reserved"].asString());
+	ret.frozen = stod(result["frozen"].asString());
 
 	return ret;
 }
@@ -1478,14 +1478,16 @@ std::vector<omni_transaction_t> BitcoinAPI::omni_listtransactions(const std::str
 		tmp.referenceaddress = val["referenceaddress"].asString();
 		tmp.ismine = val["ismine"].asBool();
 		tmp.confirmations = val["confirmations"].asInt();
-		tmp.fee = val["fee"].asDouble();
+
+		tmp.fee = stod(val["fee"].asString());
 		tmp.blocktime = val["blocktime"].asUInt();
 		tmp.valid = val["valid"].asBool();
 		tmp.positioninblock = val["positioninblock"].asUInt();
 		tmp.version = val["version"].asInt();
 		tmp.type_int = val["type_int"].asInt();
 		tmp.type = val["type"].asString();
-		tmp.amount = val["amount"].asDouble();
+
+		tmp.amount = stod(val["amount"].asString());
 		tmp.blockhash = val["blockhash"].asString();
 		tmp.block = val["block"].asUInt();
 
