@@ -1400,6 +1400,21 @@ std::string BitcoinAPI::omni_send(const std::string& fromaddress, const std::str
 	return result.asString();
 }
 
+std::string BitcoinAPI::omni_funded_send(const std::string& fromaddress, const std::string& toaddress, int propertyid, double amount, const std::string& feeaddress)
+{
+	string command = "omni_funded_send";
+	Value params, result;
+
+	params.append(fromaddress);
+	params.append(toaddress);
+	params.append(propertyid);
+	params.append(amount);
+	params.append(feeaddress);
+
+	result = sendcommand(command, params);
+	return result.asString();
+}
+
 std::string BitcoinAPI::omni_funded_sendall(const std::string& fromaddress, const std::string& toaddress, int ecosystem, const std::string& feeaddress)
 {
 	string command = "omni_funded_sendall";
