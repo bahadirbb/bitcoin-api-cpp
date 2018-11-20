@@ -854,13 +854,22 @@ string BitcoinAPI::sendmany(const string& fromaccount, const map<string,double>&
 	return result.asString();
 }
 
-vector<unspenttxout_t> BitcoinAPI::listunspent(int minconf, int maxconf) {
+vector<unspenttxout_t> BitcoinAPI::listunspent(int minconf, int maxconf, const vector<string>& addresses) {
+
 	string command = "listunspent";
 	Value params, result;
 	vector<unspenttxout_t> ret;
 
 	params.append(minconf);
 	params.append(maxconf);
+	if (addresses.size() > 0) {
+		Value addressesParam(Json::arrayValue);
+		for(vector<string>::const_iterator it = addresses.begin(); it != addresses.end(); it++){
+			Value val;
+			addressesParam.append((*it));
+		}
+		params.append(addressesParam);
+	}
 	result = sendcommand(command, params);
 
 	for(ValueIterator it = result.begin(); it != result.end(); it++){
@@ -879,6 +888,11 @@ vector<unspenttxout_t> BitcoinAPI::listunspent(int minconf, int maxconf) {
 	}
 
 	return ret;
+}
+
+vector<unspenttxout_t> BitcoinAPI::listunspent(int minconf, int maxconf) {
+	std::vector<std::string> addresses;
+	return this->listunspent(minconf, maxconf, addresses);
 }
 
 vector<txout_t> BitcoinAPI::listlockunspent() {
@@ -1037,6 +1051,7 @@ txsinceblock_t BitcoinAPI::listsinceblock(const string& blockhash, int target_co
 		Value val = (*it);
 		transactioninfo_t tmp;
 
+		tmp.involvesWatchonly = val["involvesWatchonly"].asBool();
 		tmp.account = val["account"].asString();
 		tmp.address = val["address"].asString();
 		tmp.category = val["category"].asString();
@@ -1394,7 +1409,7 @@ std::string BitcoinAPI::omni_send(const std::string& fromaddress, const std::str
 	params.append(fromaddress);
 	params.append(toaddress);
 	params.append(propertyid);
-	params.append(amount);
+	params.append(std::to_string(amount));
 
 	result = sendcommand(command, params);
 	return result.asString();
@@ -1408,7 +1423,7 @@ std::string BitcoinAPI::omni_funded_send(const std::string& fromaddress, const s
 	params.append(fromaddress);
 	params.append(toaddress);
 	params.append(propertyid);
-	params.append(amount);
+	params.append(std::to_string(amount));
 	params.append(feeaddress);
 
 	result = sendcommand(command, params);
@@ -1493,7 +1508,7 @@ std::vector<omni_transaction_t> BitcoinAPI::omni_listtransactions(const std::str
 		tmp.referenceaddress = val["referenceaddress"].asString();
 		tmp.ismine = val["ismine"].asBool();
 		tmp.confirmations = val["confirmations"].asInt();
-
+		tmp.propertyid = val["propertyid"].asInt();
 		tmp.fee = stod(val["fee"].asString());
 		tmp.blocktime = val["blocktime"].asUInt();
 		tmp.valid = val["valid"].asBool();
@@ -1510,7 +1525,38 @@ std::vector<omni_transaction_t> BitcoinAPI::omni_listtransactions(const std::str
 	}
 
 	return ret;
+}
 
+std::vector<omni_transaction_t> BitcoinAPI::omni_listpendingtransactions(const std::string& address) 
+{	
+	string command = "omni_listpendingtransactions";
+	Value params, result;
+	vector<omni_transaction_t> ret;
+
+	params.append(address);
+	result = sendcommand(command, params);
+
+	for(ValueIterator it = result.begin(); it != result.end(); it++) {
+		omni_transaction_t tmp;
+		Value val = (*it);
+		tmp.txid = val["txid"].asString();
+		tmp.sendingaddress = val["sendingaddress"].asString();
+		tmp.referenceaddress = val["referenceaddress"].asString();
+		tmp.ismine = val["ismine"].asBool();
+		tmp.confirmations = val["confirmations"].asInt();
+		tmp.propertyid = val["propertyid"].asInt();
+		tmp.fee = stod(val["fee"].asString());
+		tmp.blocktime = val["blocktime"].asUInt();
+		tmp.version = val["version"].asInt();
+		tmp.type_int = val["type_int"].asInt();
+		tmp.type = val["type"].asString();
+
+		tmp.amount = stod(val["amount"].asString());
+
+		ret.push_back(tmp);
+	}
+
+	return ret;
 }
 
 #endif

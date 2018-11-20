@@ -77,6 +77,7 @@
 	};
 
 	struct transactioninfo_t: accountinfo_t{
+		bool involvesWatchonly;
 		std::string address;
 		std::string category;
 		std::string blockhash;
@@ -248,6 +249,7 @@
 		std::string txid;
 		std::string sendingaddress;
 		std::string referenceaddress;
+		int propertyid;
 		bool ismine;
 		int confirmations;
 		double amount;

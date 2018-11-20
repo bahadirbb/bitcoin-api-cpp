@@ -38,6 +38,7 @@ public:
     std::vector<omni_detailed_balance_t> omni_getwalletbalances(bool includewatchonly);
     omni_balance_t omni_getbalance(const std::string& address, int propertyid);
     std::vector<omni_transaction_t> omni_listtransactions(const std::string& txid = "*", int count = 10, int skip = 0, int startblock = 0, int endblock = 999999999);
+    std::vector<omni_transaction_t> omni_listpendingtransactions(const std::string& address = "");
 
     #endif
 
@@ -127,6 +128,7 @@ public:
     utxosetinfo_t gettxoutsetinfo();
 
     std::vector<unspenttxout_t> listunspent(int minconf = 1, int maxconf = 999999);
+    std::vector<unspenttxout_t> listunspent(int minconf, int maxconf, const std::vector<std::string>& addresses);
     std::vector<txout_t> listlockunspent();
     bool lockunspent(bool unlock, const std::vector<txout_t>& outputs);
 
