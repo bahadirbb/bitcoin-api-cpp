@@ -40,7 +40,7 @@ public:
 		/* Authentication error */
 		}else if(errcode == Errors::ERROR_RPC_INTERNAL_ERROR && message.size() == 18){
 			this->code = errcode;
-			this->msg = "Failed to authenticate successfully";
+			this->msg = "Failed to authenticate successfully. " + message;
 		/* Miscellaneous error */
 		}else{
 			this->code = parseCode(message);

@@ -11,6 +11,8 @@
 #ifndef BITCOIN_API_H
 #define BITCOIN_API_H
 
+#define _OMNI_SUPPORT_
+
 #include "types.h"
 #include "exception.h"
 
@@ -28,6 +30,17 @@ public:
     BitcoinAPI(const std::string& user, const std::string& password, const std::string& host, int port, int httpTimeout = 50000);
     BitcoinAPI(const std::string& user, const std::string& password, const std::string& host, int port, const std::string& wallet, int httpTimeout = 50000);
     ~BitcoinAPI();
+
+    #ifdef _OMNI_SUPPORT_
+    std::string omni_send(const std::string& fromaddress, const std::string& toaddress, int propertyid, double amount);
+    std::string omni_funded_sendall(const std::string& fromaddress, const std::string& toaddress, int ecosystem, const std::string& feeaddress);
+    std::string omni_funded_send(const std::string& fromaddress, const std::string& toaddress, int propertyid, double amount, const std::string& feeaddress);
+    std::vector<omni_detailed_balance_t> omni_getwalletbalances(bool includewatchonly);
+    omni_balance_t omni_getbalance(const std::string& address, int propertyid);
+    std::vector<omni_transaction_t> omni_listtransactions(const std::string& txid = "*", int count = 10, int skip = 0, int startblock = 0, int endblock = 999999999);
+    std::vector<omni_transaction_t> omni_listpendingtransactions(const std::string& address = "");
+
+    #endif
 
     /* === Auxiliary functions === */
     Json::Value sendcommand(const std::string& command, const Json::Value& params);
@@ -115,6 +128,7 @@ public:
     utxosetinfo_t gettxoutsetinfo();
 
     std::vector<unspenttxout_t> listunspent(int minconf = 1, int maxconf = 999999);
+    std::vector<unspenttxout_t> listunspent(int minconf, int maxconf, const std::vector<std::string>& addresses);
     std::vector<txout_t> listlockunspent();
     bool lockunspent(bool unlock, const std::vector<txout_t>& outputs);
 
