@@ -380,6 +380,7 @@ validateaddress_t BitcoinAPI::validateaddress(const string& bitcoinaddress) {
 	ret.isscript = result["isscript"].asBool();
 	ret.pubkey = result["pubkey"].asString();
 	ret.iscompressed = result["iscompressed"].asBool();
+	ret.iswatchonly = result["iswatchonly"].asBool();
 
 	return ret;
 }

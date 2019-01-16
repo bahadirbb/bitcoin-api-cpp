@@ -103,6 +103,7 @@
 		std::string pubkey;
 		bool iscompressed;
 		std::string account;
+		bool iswatchonly;
 	};
 
 	struct addressgrouping_t{
