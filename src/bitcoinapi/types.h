@@ -276,6 +276,11 @@
 		std::string name;
 	};
 
+	struct omni_address_balance_t{
+		std::string address;
+		std::vector<omni_detailed_balance_t> balances;
+	};
+
 	#endif
 
 
