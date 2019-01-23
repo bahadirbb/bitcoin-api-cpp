@@ -74,6 +74,7 @@ public:
     multisig_t createmultisig(int nrequired, const std::vector<std::string>& keys);
     std::string getnewaddress(const std::string& account = "");
     validateaddress_t validateaddress(const std::string& bitcoinaddress);
+    getaddressinfo_t getaddressinfo(const std::string& bitcoinaddress);
 
     void keypoolrefill();
     bool settxfee(double amount);

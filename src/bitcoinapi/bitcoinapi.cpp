@@ -366,6 +366,24 @@ string BitcoinAPI::getnewaddress(const string& account) {
 	return result.asString();
 }
 
+getaddressinfo_t BitcoinAPI::getaddressinfo(const string& bitcoinaddress) {
+	string command = "getaddressinfo";
+	Value params, result;
+	getaddressinfo_t ret;
+
+	params.append(bitcoinaddress);
+	result = sendcommand(command, params);
+	
+	ret.address = result["address"].asString();
+	ret.scriptPubKey = result["scriptPubKey"].asString();
+	ret.ismine = result["ismine"].asBool();
+	ret.isscript = result["isscript"].asBool();
+	ret.iswatchonly = result["iswatchonly"].asBool();
+	ret.iswitness = result["iswitness"].asBool();
+
+	return ret;
+}
+
 validateaddress_t BitcoinAPI::validateaddress(const string& bitcoinaddress) {
 	string command = "validateaddress";
 	Value params, result;

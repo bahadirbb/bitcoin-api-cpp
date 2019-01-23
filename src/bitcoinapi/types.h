@@ -106,6 +106,39 @@
 		bool iswatchonly;
 	};
 
+	struct getaddressinfo_t {
+		std::string address;
+		std::string scriptPubKey;
+		bool ismine;
+		bool iswatchonly;
+		bool isscript;
+		bool iswitness;
+		/*
+		double witness_version;
+		std::string witness_program;
+		std::string script;
+		std::string hex;
+		std::vector<std::string> pubkeys;
+		double sigsrequired;
+		std::string pubkey;
+		"embedded" : {...},           (object, optional) Information about the address embedded in P2SH or P2WSH, if relevant and known. It includes all getaddressinfo output fields for the embedded address, excluding metadata ("timestamp", "hdkeypath", "hdseedid") and relation to the wallet ("ismine", "iswatchonly", "account").
+  "iscompressed" : true|false,  (boolean) If the address is compressed
+  "label" :  "label"         (string) The label associated with the address, "" is the default account
+  "account" : "account"         (string) DEPRECATED. This field will be removed in V0.18. To see this deprecated field, start bitcoind with -deprecatedrpc=accounts. The account associated with the address, "" is the default account
+  "timestamp" : timestamp,      (number, optional) The creation time of the key if available in seconds since epoch (Jan 1 1970 GMT)
+  "hdkeypath" : "keypath"       (string, optional) The HD keypath if the key is HD and available
+  "hdseedid" : "<hash160>"      (string, optional) The Hash160 of the HD seed
+  "hdmasterkeyid" : "<hash160>" (string, optional) alias for hdseedid maintained for backwards compatibility. Will be removed in V0.18.
+  "labels"                      (object) Array of labels associated with the address.
+    [
+      { (json object of label data)
+        "name": "labelname" (string) The label
+        "purpose": "string" (string) Purpose of address ("send" for sending address, "receive" for receiving address)
+      },...
+    ]
+		*/
+	};
+
 	struct addressgrouping_t{
 		std::string address;
 		double balance;
