@@ -1463,6 +1463,39 @@ std::string BitcoinAPI::omni_funded_sendall(const std::string& fromaddress, cons
 	return result.asString();
 }
 
+std::vector<omni_address_balance_t> BitcoinAPI::omni_getwalletaddressbalances(bool includewatchonly)
+{
+	string command = "omni_getwalletaddressbalances";
+	Value params, result;
+	vector<omni_address_balance_t> ret;
+
+	params.append(includewatchonly);
+	result = sendcommand(command, params);
+
+	for(ValueIterator it = result.begin(); it != result.end(); it++){
+		omni_address_balance_t tmp;
+		Value val = (*it);
+		tmp.address = val["address"].asString();
+
+		for(ValueIterator it2 = val["balances"].begin(); it2 != val["balances"].end(); it2++){
+			omni_detailed_balance_t tmp2;
+			Value val = (*it2);
+
+			tmp2.balance = stod(val["balance"].asString());
+			tmp2.reserved = stod(val["reserved"].asString());
+			tmp2.frozen = stod(val["frozen"].asString());
+			tmp2.name = val["name"].asString();
+			tmp2.propertyid = val["propertyid"].asInt();
+
+			tmp.balances.push_back(tmp2);
+		}
+		ret.push_back(tmp);
+	}
+
+	return ret;
+}
+
+
 std::vector<omni_detailed_balance_t> BitcoinAPI::omni_getwalletbalances(bool includewatchonly)
 {
 	string command = "omni_getwalletbalances";

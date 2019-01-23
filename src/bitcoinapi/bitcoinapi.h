@@ -36,6 +36,8 @@ public:
     std::string omni_funded_sendall(const std::string& fromaddress, const std::string& toaddress, int ecosystem, const std::string& feeaddress);
     std::string omni_funded_send(const std::string& fromaddress, const std::string& toaddress, int propertyid, double amount, const std::string& feeaddress);
     std::vector<omni_detailed_balance_t> omni_getwalletbalances(bool includewatchonly);
+    std::vector<omni_address_balance_t> omni_getwalletaddressbalances(bool includewatchonly);
+    
     omni_balance_t omni_getbalance(const std::string& address, int propertyid);
     std::vector<omni_transaction_t> omni_listtransactions(const std::string& txid = "*", int count = 10, int skip = 0, int startblock = 0, int endblock = 999999999);
     std::vector<omni_transaction_t> omni_listpendingtransactions(const std::string& address = "");
