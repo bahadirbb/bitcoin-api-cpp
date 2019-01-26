@@ -39,6 +39,7 @@ public:
     std::vector<omni_address_balance_t> omni_getwalletaddressbalances(bool includewatchonly);
     
     omni_balance_t omni_getbalance(const std::string& address, int propertyid);
+    omni_transaction_t omni_gettransaction(const std::string& txid);
     std::vector<omni_transaction_t> omni_listtransactions(const std::string& txid = "*", int count = 10, int skip = 0, int startblock = 0, int endblock = 999999999);
     std::vector<omni_transaction_t> omni_listpendingtransactions(const std::string& address = "");
 

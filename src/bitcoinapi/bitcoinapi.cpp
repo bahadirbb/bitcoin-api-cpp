@@ -373,7 +373,7 @@ getaddressinfo_t BitcoinAPI::getaddressinfo(const string& bitcoinaddress) {
 
 	params.append(bitcoinaddress);
 	result = sendcommand(command, params);
-	
+
 	ret.address = result["address"].asString();
 	ret.scriptPubKey = result["scriptPubKey"].asString();
 	ret.ismine = result["ismine"].asBool();
@@ -1419,6 +1419,36 @@ utxosetinfo_t BitcoinAPI::gettxoutsetinfo() {
 }
 
 #ifdef _OMNI_SUPPORT_
+
+omni_transaction_t BitcoinAPI::omni_gettransaction(const std::string& txid)
+{
+	string command = "omni_gettransaction";
+	Value params, result;
+	omni_transaction_t ret;
+
+	params.append(txid);
+
+	result = sendcommand(command, params);
+
+	ret.txid = result["txid"].asString();
+	ret.sendingaddress = result["sendingaddress"].asString();
+	ret.referenceaddress = result["referenceaddress"].asString();
+	ret.ismine = result["ismine"].asBool();
+	ret.confirmations = result["confirmations"].asInt();
+	ret.fee = stod(result["fee"].asString());
+	ret.blocktime = result["blocktime"].asUInt();
+	ret.valid = result["valid"].asBool();
+	ret.positioninblock = result["positioninblock"].asUInt();
+	ret.version = result["version"].asInt();
+	ret.type_int = result["type_int"].asInt();
+	ret.type = result["type"].asString();
+
+	ret.amount = stod(result["amount"].asString());
+	ret.blockhash = result["blockhash"].asString();
+	ret.block = result["block"].asUInt();
+
+	return ret;
+}
 
 std::string BitcoinAPI::omni_send(const std::string& fromaddress, const std::string& toaddress, int propertyid, double amount)
 {
