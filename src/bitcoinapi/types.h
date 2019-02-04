@@ -273,11 +273,18 @@
 		std::string address;
 		std::string account;
 		std::string scriptPubKey;
+		bool spendable;
 		double amount;
 		int confirmations;
 	};
 
 	#ifdef _OMNI_SUPPORT_
+
+	struct omni_subsend_t {
+    	int propertyid;
+        bool divisible;
+        double amount;
+	};
 
 	struct omni_transaction_t {
 		std::string txid;
@@ -296,7 +303,10 @@
 		int version;
 		int type_int;
 		std::string type;
+		std::vector<omni_subsend_t> subsends;
 	};
+
+	
 
 	struct omni_balance_t {
 		double balance;
