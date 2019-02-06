@@ -717,7 +717,7 @@ map<string, double> BitcoinAPI::listaccounts(int minconf) {
 	result = sendcommand(command, params);
 
 	for(ValueIterator it = result.begin(); it != result.end(); it++){
-		Value &val = (*it);
+		// Value &val = (*it);
 		std::pair<string, double> tmp;
 
 		tmp.first = it.key().asString();
