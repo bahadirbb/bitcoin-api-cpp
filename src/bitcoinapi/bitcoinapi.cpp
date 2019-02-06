@@ -142,7 +142,7 @@ vector<nodeinfo_t> BitcoinAPI::getaddednodeinfo(bool dns) {
 	result = sendcommand(command, params);
 
 	for (ValueIterator it1 = result.begin(); it1 != result.end(); it1++) {
-		Value val1 = (*it1);
+		Value &val1 = (*it1);
 		nodeinfo_t node;
 
 		node.addednode = val1["addednode"].asString();
@@ -151,7 +151,7 @@ vector<nodeinfo_t> BitcoinAPI::getaddednodeinfo(bool dns) {
 			node.connected = val1["connected"].asBool();
 
 			for (ValueIterator it2 = val1["addresses"].begin(); it2 != val1["addresses"].end(); it2++) {
-				Value val2 = (*it2);
+				Value &val2 = (*it2);
 				netaddress_t net;
 
 				net.address = val2["address"].asString();
@@ -178,7 +178,7 @@ vector<nodeinfo_t> BitcoinAPI::getaddednodeinfo(bool dns, const std::string& nod
 	result = sendcommand(command, params);
 
 	for (ValueIterator it1 = result.begin(); it1 != result.end(); it1++) {
-		Value val1 = (*it1);
+		Value &val1 = (*it1);
 		nodeinfo_t node;
 
 		node.addednode = val1["addednode"].asString();
@@ -187,7 +187,7 @@ vector<nodeinfo_t> BitcoinAPI::getaddednodeinfo(bool dns, const std::string& nod
 			node.connected = val1["connected"].asBool();
 
 			for (ValueIterator it2 = val1["addresses"].begin(); it2 != val1["addresses"].end(); it2++) {
-				Value val2 = (*it2);
+				Value &val2 = (*it2);
 				netaddress_t net;
 
 				net.address = val2["address"].asString();
@@ -218,7 +218,7 @@ vector<peerinfo_t> BitcoinAPI::getpeerinfo() {
  	result = sendcommand(command, params);
 
 	for(ValueIterator it = result.begin(); it != result.end(); it++){
-		Value val = (*it);
+		Value &val = (*it);
 		peerinfo_t peer;
 
 		peer.addr = val["addr"].asString();
@@ -518,7 +518,7 @@ vector<accountinfo_t> BitcoinAPI::listreceivedbyaccount(int minconf, bool includ
 	result = sendcommand(command, params);
 
 	for (ValueIterator it = result.begin(); it != result.end(); it++) {
-		Value val = (*it);
+		Value &val = (*it);
 		accountinfo_t acct;
 		acct.account = val["account"].asString();
 		acct.amount = val["amount"].asDouble();
@@ -583,7 +583,7 @@ gettransaction_t BitcoinAPI::gettransaction(const string& tx, bool watch) {
 
 	for (ValueIterator it = result["details"].begin();
 			it != result["details"].end(); it++) {
-		Value val = (*it);
+		Value &val = (*it);
 		transactiondetails_t tmp;
 		tmp.account = val["account"].asString();
 		tmp.address = val["address"].asString();
@@ -608,7 +608,7 @@ vector<transactioninfo_t> BitcoinAPI::listtransactions() {
 	result = sendcommand(command, params);
 
 	for (ValueIterator it = result.begin(); it != result.end(); it++) {
-		Value val = (*it);
+		Value &val = (*it);
 		transactioninfo_t tmp;
 
 		tmp.account = val["account"].asString();
@@ -647,7 +647,7 @@ vector<transactioninfo_t> BitcoinAPI::listtransactions(const string& account, in
 	result = sendcommand(command, params);
 
 	for (ValueIterator it = result.begin(); it != result.end(); it++) {
-		Value val = (*it);
+		Value &val = (*it);
 		transactioninfo_t tmp;
 
 		tmp.account = val["account"].asString();
@@ -717,7 +717,7 @@ map<string, double> BitcoinAPI::listaccounts(int minconf) {
 	result = sendcommand(command, params);
 
 	for(ValueIterator it = result.begin(); it != result.end(); it++){
-		Value val = (*it);
+		Value &val = (*it);
 		std::pair<string, double> tmp;
 
 		tmp.first = it.key().asString();
@@ -735,11 +735,11 @@ vector< vector<addressgrouping_t> > BitcoinAPI::listaddressgroupings() {
 	result = sendcommand(command, params);
 
 	for(ValueIterator it1 = result.begin(); it1 != result.end(); it1++){
-		Value val1 = (*it1);
+		Value &val1 = (*it1);
 		vector<addressgrouping_t> tmp1;
 
 		for(ValueIterator it2 = val1.begin(); it2 != val1.end(); it2++){
-				Value val2 = (*it2);
+				Value &val2 = (*it2);
 				addressgrouping_t tmp2;
 
 				tmp2.address = val2.operator []((uint)0).asString();
@@ -897,7 +897,7 @@ vector<unspenttxout_t> BitcoinAPI::listunspent(int minconf, int maxconf, const v
 	result = sendcommand(command, params);
 
 	for(ValueIterator it = result.begin(); it != result.end(); it++){
-		Value val = (*it);
+		Value &val = (*it);
 		unspenttxout_t tmp;
 
 		tmp.txid = val["txid"].asString();
@@ -927,7 +927,7 @@ vector<txout_t> BitcoinAPI::listlockunspent() {
 	result = sendcommand(command, params);
 
 	for(ValueIterator it = result.begin(); it != result.end(); it++){
-		Value val = (*it);
+		Value &val = (*it);
 		txout_t tmp;
 
 		tmp.txid = val["txid"].asString();
@@ -1073,7 +1073,7 @@ txsinceblock_t BitcoinAPI::listsinceblock(const string& blockhash, int target_co
 	result = sendcommand(command, params);
 
 	for(ValueIterator it = result["transactions"].begin(); it != result["transactions"].end(); it++){
-		Value val = (*it);
+		Value &val = (*it);
 		transactioninfo_t tmp;
 
 		tmp.involvesWatchonly = val["involvesWatchonly"].asBool();
@@ -1123,7 +1123,7 @@ getrawtransaction_t BitcoinAPI::getrawtransaction(const string& txid, int verbos
 		ret.locktime = result["locktime"].asInt();
 		for (ValueIterator it = result["vin"].begin(); it != result["vin"].end();
 				it++) {
-			Value val = (*it);
+			Value &val = (*it);
 			vin_t input;
 			input.txid = val["txid"].asString();
 			input.n = val["vout"].asUInt();
@@ -1135,7 +1135,7 @@ getrawtransaction_t BitcoinAPI::getrawtransaction(const string& txid, int verbos
 
 		for (ValueIterator it = result["vout"].begin(); it != result["vout"].end();
 				it++) {
-			Value val = (*it);
+			Value &val = (*it);
 			vout_t output;
 
 			output.value = val["value"].asDouble();
@@ -1174,7 +1174,7 @@ decodescript_t BitcoinAPI::decodescript(const std::string& hexString) {
 	ret.p2sh = result["p2sh"].asString();
 	
 	for (ValueIterator it = result["addresses"].begin(); it != result["addresses"].end(); it++) {
-		Value val = (*it);
+		Value &val = (*it);
 		ret.addresses.push_back(val.asString());
 	}
 	
@@ -1194,7 +1194,7 @@ decoderawtransaction_t BitcoinAPI::decoderawtransaction(const string& hexString)
 	ret.locktime = result["locktime"].asInt();
 	for (ValueIterator it = result["vin"].begin(); it != result["vin"].end();
 			it++) {
-		Value val = (*it);
+		Value &val = (*it);
 		vin_t input;
 		input.txid = val["txid"].asString();
 		input.n = val["vout"].asUInt();
@@ -1206,7 +1206,7 @@ decoderawtransaction_t BitcoinAPI::decoderawtransaction(const string& hexString)
 
 	for (ValueIterator it = result["vout"].begin(); it != result["vout"].end();
 			it++) {
-		Value val = (*it);
+		Value &val = (*it);
 		vout_t output;
 
 		output.value = val["value"].asDouble();
@@ -1461,7 +1461,7 @@ omni_transaction_t BitcoinAPI::omni_gettransaction(const std::string& txid)
 		for(ValueIterator it2 = result["subsends"].begin(); it2 != result["subsends"].end(); it2++)
 		{
 			omni_subsend_t tmp2;
-			Value val2 = (*it2);
+			Value &val2 = (*it2);
 			tmp2.propertyid = val2["propertyid"].asInt();
 			tmp2.divisible = val2["divisible"].asBool();
 			tmp2.amount = stod(val2["amount"].asString());
@@ -1537,12 +1537,12 @@ std::vector<omni_address_balance_t> BitcoinAPI::omni_getwalletaddressbalances(bo
 
 	for(ValueIterator it = result.begin(); it != result.end(); it++){
 		omni_address_balance_t tmp;
-		Value val = (*it);
+		Value &val = (*it);
 		tmp.address = val["address"].asString();
 
 		for(ValueIterator it2 = val["balances"].begin(); it2 != val["balances"].end(); it2++){
 			omni_detailed_balance_t tmp2;
-			Value val2 = (*it2);
+			Value &val2 = (*it2);
 
 			tmp2.balance = stod(val2["balance"].asString());
 			tmp2.reserved = stod(val2["reserved"].asString());
@@ -1570,7 +1570,7 @@ std::vector<omni_detailed_balance_t> BitcoinAPI::omni_getwalletbalances(bool inc
 
 	for(ValueIterator it = result.begin(); it != result.end(); it++){
 		omni_detailed_balance_t tmp;
-		Value val = (*it);
+		Value &val = (*it);
 
 		tmp.balance = stod(val["balance"].asString());
 		tmp.reserved = stod(val["reserved"].asString());
@@ -1617,7 +1617,7 @@ std::vector<omni_transaction_t> BitcoinAPI::omni_listtransactions(const std::str
 
 	for(ValueIterator it = result.begin(); it != result.end(); it++){
 		omni_transaction_t tmp;
-		Value val = (*it);
+		Value &val = (*it);
 		tmp.txid = val["txid"].asString();
 		tmp.sendingaddress = val["sendingaddress"].asString();
 		tmp.referenceaddress = val["referenceaddress"].asString();
@@ -1643,7 +1643,7 @@ std::vector<omni_transaction_t> BitcoinAPI::omni_listtransactions(const std::str
 			for(ValueIterator it2 = val["subsends"].begin(); it2 != val["subsends"].end(); it2++)
 			{
 				omni_subsend_t tmp2;
-				Value val2 = (*it2);
+				Value &val2 = (*it2);
 				tmp2.propertyid = val2["propertyid"].asInt();
 				tmp2.divisible = val2["divisible"].asBool();
 				tmp2.amount = stod(val2["amount"].asString());
@@ -1655,7 +1655,6 @@ std::vector<omni_transaction_t> BitcoinAPI::omni_listtransactions(const std::str
 			tmp.propertyid = val["propertyid"].asInt();
 			// let's just try to parse
 			try{
-				
 				tmp.amount = stod(val["amount"].asString());
 			}
 			catch (std::invalid_argument e) {
@@ -1681,7 +1680,7 @@ std::vector<omni_transaction_t> BitcoinAPI::omni_listpendingtransactions(const s
 
 	for(ValueIterator it = result.begin(); it != result.end(); it++) {
 		omni_transaction_t tmp;
-		Value val = (*it);
+		Value &val = (*it);
 		tmp.txid = val["txid"].asString();
 		tmp.sendingaddress = val["sendingaddress"].asString();
 		tmp.referenceaddress = val["referenceaddress"].asString();
