@@ -1678,7 +1678,7 @@ std::vector<omni_transaction_t> BitcoinAPI::omni_listpendingtransactions(const s
 	params.append(address);
 	result = sendcommand(command, params);
 
-	for(ValueIterator it = result.begin(); it != result.end(); it++) {
+	for(ValueIterator it = result.begin(); it != result.end(); it++){
 		omni_transaction_t tmp;
 		Value &val = (*it);
 		tmp.txid = val["txid"].asString();
@@ -1686,15 +1686,46 @@ std::vector<omni_transaction_t> BitcoinAPI::omni_listpendingtransactions(const s
 		tmp.referenceaddress = val["referenceaddress"].asString();
 		tmp.ismine = val["ismine"].asBool();
 		tmp.confirmations = val["confirmations"].asInt();
-		tmp.propertyid = val["propertyid"].asInt();
 		tmp.fee = stod(val["fee"].asString());
 		tmp.blocktime = val["blocktime"].asUInt();
+		tmp.valid = val["valid"].asBool();
+		tmp.positioninblock = val["positioninblock"].asUInt();
 		tmp.version = val["version"].asInt();
 		tmp.type_int = val["type_int"].asInt();
 		tmp.type = val["type"].asString();
+		tmp.blockhash = val["blockhash"].asString();
+		tmp.block = val["block"].asUInt();
 
-		tmp.amount = stod(val["amount"].asString());
-
+		if(tmp.type_int == OMNI_TYPE_SIMPLE_SEND) 
+		{
+			tmp.propertyid = val["propertyid"].asInt();
+			tmp.amount = stod(val["amount"].asString());
+		} 
+		else if (tmp.type_int == OMNI_TYPE_SEND_ALL) 
+		{
+			for(ValueIterator it2 = val["subsends"].begin(); it2 != val["subsends"].end(); it2++)
+			{
+				omni_subsend_t tmp2;
+				Value &val2 = (*it2);
+				tmp2.propertyid = val2["propertyid"].asInt();
+				tmp2.divisible = val2["divisible"].asBool();
+				tmp2.amount = stod(val2["amount"].asString());
+				tmp.subsends.push_back(tmp2);
+			}
+		} 
+		else 
+		{
+			tmp.propertyid = val["propertyid"].asInt();
+			// let's just try to parse
+			try{
+				tmp.amount = stod(val["amount"].asString());
+			}
+			catch (std::invalid_argument e) {
+        		tmp.amount = 0;
+    		}
+			
+		}
+		
 		ret.push_back(tmp);
 	}
 
